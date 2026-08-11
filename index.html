@@ -1,10 +1,9 @@
 <!doctype html>
-<!-- kich hoat github pages -->
-<!-- fix fetch 2026-08-11: load quiz payload from CDN/raw GitHub instead of relative path -->
 <html lang="vi">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <title>Thi trắc nghiệm</title>
   <style>
     html,body{height:100%;margin:0;font-family:Segoe UI,Arial,sans-serif;background:#f4f7fb;color:#17324d}
@@ -17,33 +16,34 @@
 </head>
 <body>
   <div class="loading"><div class="card"><div class="spinner"></div><h1>Đang tải bộ đề...</h1><p>Hệ thống đang khởi tạo bài thi 40 câu / 30 phút.</p><p id="err" class="err"></p></div></div>
+
+  <!-- Dữ liệu được chia thành các file JS cùng host để không còn dùng fetch/CORS -->
+  <script src="payload/1.js?v=20260811-3"></script>
+  <script src="payload/2.js?v=20260811-3"></script>
+  <script src="payload/3.js?v=20260811-3"></script>
+  <script src="payload/4.js?v=20260811-3"></script>
+  <script src="payload/5.js?v=20260811-3"></script>
   <script>
   (async()=>{
     const err=document.getElementById('err');
     try{
-      if(!('DecompressionStream' in window)) throw new Error('Trình duyệt này quá cũ. Hãy dùng Chrome, Edge hoặc Firefox phiên bản mới.');
-      const sources=[
-        'https://cdn.jsdelivr.net/gh/ngochvhc0811/thi-trac-nghiem@main/site.html.gz.b64',
-        'https://raw.githubusercontent.com/ngochvhc0811/thi-trac-nghiem/main/site.html.gz.b64',
-        './site.html.gz.b64'
-      ];
-      let b64=''; let lastError='';
-      for(const url of sources){
-        try{
-          const r=await fetch(url,{cache:'no-store'});
-          if(!r.ok) throw new Error('HTTP '+r.status);
-          b64=(await r.text()).trim();
-          if(b64) break;
-        }catch(e){lastError=url+' → '+(e.message||String(e));}
+      if(!window.__QUIZ_PAYLOAD || window.__QUIZ_PAYLOAD.length < 40000){
+        throw new Error('Dữ liệu bộ đề chưa tải đủ. Hãy tải lại trang.');
       }
-      if(!b64) throw new Error('Không tải được dữ liệu bộ đề.\n'+lastError);
-      const bin=atob(b64);
+      if(!('DecompressionStream' in window)){
+        throw new Error('Trình duyệt chưa hỗ trợ giải nén dữ liệu. Hãy cập nhật Chrome, Edge hoặc Safari lên phiên bản mới.');
+      }
+      const bin=atob(window.__QUIZ_PAYLOAD);
       const bytes=new Uint8Array(bin.length);
       for(let i=0;i<bin.length;i++) bytes[i]=bin.charCodeAt(i);
       const ds=new DecompressionStream('gzip');
       const html=await new Response(new Blob([bytes]).stream().pipeThrough(ds)).text();
-      document.open();document.write(html);document.close();
-    }catch(e){err.textContent=e.message||String(e);}
+      document.open();
+      document.write(html);
+      document.close();
+    }catch(e){
+      err.textContent=e?.message||String(e);
+    }
   })();
   </script>
 </body>
