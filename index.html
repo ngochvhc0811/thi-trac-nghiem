@@ -1,6 +1,6 @@
 <!doctype html>
 <!-- kich hoat github pages -->
-<!-- trigger publish 2026-08-11 -->
+<!-- fix fetch 2026-08-11: load quiz payload from CDN/raw GitHub instead of relative path -->
 <html lang="vi">
 <head>
   <meta charset="utf-8">
@@ -12,7 +12,7 @@
     .card{max-width:560px;width:100%;background:#fff;border:1px solid #dbe6f2;border-radius:18px;padding:32px;box-shadow:0 16px 40px rgba(26,65,105,.10);text-align:center}
     .spinner{width:42px;height:42px;border:4px solid #dbe7f4;border-top-color:#0b5ed7;border-radius:50%;margin:0 auto 18px;animation:spin .8s linear infinite}
     @keyframes spin{to{transform:rotate(360deg)}}
-    h1{font-size:22px;margin:0 0 10px}p{color:#60758a;line-height:1.6;margin:0}.err{color:#b42318;margin-top:14px}
+    h1{font-size:22px;margin:0 0 10px}p{color:#60758a;line-height:1.6;margin:0}.err{color:#b42318;margin-top:14px;white-space:pre-line}
   </style>
 </head>
 <body>
@@ -22,9 +22,21 @@
     const err=document.getElementById('err');
     try{
       if(!('DecompressionStream' in window)) throw new Error('Trình duyệt này quá cũ. Hãy dùng Chrome, Edge hoặc Firefox phiên bản mới.');
-      const r=await fetch('./site.html.gz.b64',{cache:'no-store'});
-      if(!r.ok) throw new Error('Không tải được dữ liệu bộ đề (HTTP '+r.status+').');
-      const b64=(await r.text()).trim();
+      const sources=[
+        'https://cdn.jsdelivr.net/gh/ngochvhc0811/thi-trac-nghiem@main/site.html.gz.b64',
+        'https://raw.githubusercontent.com/ngochvhc0811/thi-trac-nghiem/main/site.html.gz.b64',
+        './site.html.gz.b64'
+      ];
+      let b64=''; let lastError='';
+      for(const url of sources){
+        try{
+          const r=await fetch(url,{cache:'no-store'});
+          if(!r.ok) throw new Error('HTTP '+r.status);
+          b64=(await r.text()).trim();
+          if(b64) break;
+        }catch(e){lastError=url+' → '+(e.message||String(e));}
+      }
+      if(!b64) throw new Error('Không tải được dữ liệu bộ đề.\n'+lastError);
       const bin=atob(b64);
       const bytes=new Uint8Array(bin.length);
       for(let i=0;i<bin.length;i++) bytes[i]=bin.charCodeAt(i);
