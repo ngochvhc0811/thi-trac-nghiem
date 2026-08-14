@@ -15,7 +15,7 @@ const state = {
 const LEVEL_LABELS = { easy: "Mức 1", normal: "Mức 2", hard: "Mức 3" };
 const STORE_KEY = "quiz_progress_dang2025_v1";
 const THEME_KEY = "quiz_theme_v1";
-const EXAM_QUESTION_COUNT = 40;
+const EXAM_QUESTION_COUNT = 25;
 const EXAM_MINUTES = 30;
 
 function loadProgress() {
@@ -130,7 +130,7 @@ function buildSession(config, sourceQuestions = null) {
 function startQuiz(config = readConfig(), sourceQuestions = null) {
   $("#setupError").classList.add("hidden");
 
-  // Mỗi bài kiểm tra luôn cố định 40 câu trong 30 phút.
+  // Mỗi bài kiểm tra luôn cố định 25 câu trong 30 phút.
   if (config.mode === "exam") {
     config = { ...config, count: EXAM_QUESTION_COUNT, minutes: EXAM_MINUTES };
   }
