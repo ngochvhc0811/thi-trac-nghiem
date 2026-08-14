@@ -1,50 +1,250 @@
 <!doctype html>
-<html lang="vi">
+<html lang="vi" data-bs-theme="light">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0b4f9c">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Thi trắc nghiệm</title>
-  <style>
-    html,body{height:100%;margin:0;font-family:Segoe UI,Arial,sans-serif;background:#f4f7fb;color:#17324d}
-    .loading{min-height:100%;display:grid;place-items:center;padding:24px;box-sizing:border-box}
-    .card{max-width:560px;width:100%;background:#fff;border:1px solid #dbe6f2;border-radius:18px;padding:32px;box-shadow:0 16px 40px rgba(26,65,105,.10);text-align:center}
-    .spinner{width:42px;height:42px;border:4px solid #dbe7f4;border-top-color:#0b5ed7;border-radius:50%;margin:0 auto 18px;animation:spin .8s linear infinite}
-    @keyframes spin{to{transform:rotate(360deg)}}
-    h1{font-size:22px;margin:0 0 10px}p{color:#60758a;line-height:1.6;margin:0}.err{color:#b42318;margin-top:14px;white-space:pre-line}
-  </style>
+  <title>Thi trắc nghiệm nhận thức về Đảng 2025</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=20260814-3">
 </head>
-<body>
-  <div class="loading"><div class="card"><div class="spinner"></div><h1>Đang tải bộ đề...</h1><p>Hệ thống đang khởi tạo bài thi 40 câu / 30 phút.</p><p id="err" class="err"></p></div></div>
+<body class="bg-body-tertiary">
+  <nav class="navbar quiz-navbar sticky-top shadow-sm">
+    <div class="container-xl py-1 d-flex align-items-center">
+      <a class="navbar-brand d-flex align-items-center gap-3 text-white" href="#" onclick="return false;">
+        <span class="brand-logo">✓</span>
+        <span>
+          <strong class="d-block brand-name">HỆ THỐNG THI TRẮC NGHIỆM</strong>
+          <small class="d-none d-sm-block brand-caption">Nhận thức về Đảng năm 2025</small>
+        </span>
+      </a>
+      <div class="ms-auto d-flex align-items-center gap-2">
+        <span class="badge rounded-pill text-bg-light d-none d-md-inline-flex px-3 py-2">40 câu • 30 phút</span>
+        <button id="themeBtn" class="btn btn-outline-light theme-btn" type="button" title="Đổi giao diện">◐</button>
+      </div>
+    </div>
+  </nav>
 
-  <!-- Dữ liệu được chia thành các file JS cùng host để không còn dùng fetch/CORS -->
-  <script src="payload/1.js?v=20260811-3"></script>
-  <script src="payload/2.js?v=20260811-3"></script>
-  <script src="payload/3.js?v=20260811-3"></script>
-  <script src="payload/4.js?v=20260811-3"></script>
-  <script src="payload/5.js?v=20260811-3"></script>
-  <script>
-  (async()=>{
-    const err=document.getElementById('err');
-    try{
-      if(!window.__QUIZ_PAYLOAD || window.__QUIZ_PAYLOAD.length < 40000){
-        throw new Error('Dữ liệu bộ đề chưa tải đủ. Hãy tải lại trang.');
-      }
-      if(!('DecompressionStream' in window)){
-        throw new Error('Trình duyệt chưa hỗ trợ giải nén dữ liệu. Hãy cập nhật Chrome, Edge hoặc Safari lên phiên bản mới.');
-      }
-      const bin=atob(window.__QUIZ_PAYLOAD);
-      const bytes=new Uint8Array(bin.length);
-      for(let i=0;i<bin.length;i++) bytes[i]=bin.charCodeAt(i);
-      const ds=new DecompressionStream('gzip');
-      const html=await new Response(new Blob([bytes]).stream().pipeThrough(ds)).text();
-      document.open();
-      document.write(html);
-      document.close();
-    }catch(e){
-      err.textContent=e?.message||String(e);
-    }
-  })();
-  </script>
+  <main class="container-xl py-4 py-lg-5">
+    <section id="homeView" class="view active">
+      <div class="hero-card mb-4">
+        <div class="row g-4 align-items-center">
+          <div class="col-lg-7">
+            <span class="badge hero-badge mb-3">PHÒNG THI TRỰC TUYẾN</span>
+            <h1 class="display-6 fw-bold mb-3">Bài kiểm tra nhận thức về Đảng</h1>
+            <p class="lead text-body-secondary mb-0">Ngân hàng mới gồm 116 câu. Mỗi bài kiểm tra lấy ngẫu nhiên <strong>40 câu</strong> và làm trong <strong>30 phút</strong>.</p>
+          </div>
+          <div class="col-lg-5">
+            <div class="row g-3">
+              <div class="col-4"><div class="spec-card"><span class="spec-symbol">▤</span><strong>40</strong><small>Câu hỏi</small></div></div>
+              <div class="col-4"><div class="spec-card"><span class="spec-symbol">◷</span><strong>30</strong><small>Phút</small></div></div>
+              <div class="col-4"><div class="spec-card"><span class="spec-symbol">☑</span><strong>4</strong><small>Đáp án/câu</small></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-xl-8">
+          <section class="card border-0 shadow-sm quiz-card">
+            <div class="card-header bg-transparent border-0 px-4 px-lg-5 pt-4 pb-2">
+              <div class="d-flex justify-content-between align-items-start gap-3 flex-wrap">
+                <div class="d-flex align-items-center gap-3">
+                  <span class="section-number">01</span>
+                  <div><h2 class="h4 fw-bold mb-1">Thiết lập bài làm</h2><p class="text-body-secondary mb-0">Chọn hình thức và phạm vi câu hỏi.</p></div>
+                </div>
+                <span class="badge rounded-pill bank-badge px-3 py-2">116 câu trong ngân hàng</span>
+              </div>
+            </div>
+            <div class="card-body px-4 px-lg-5 pb-4 pb-lg-5">
+              <label class="form-label fw-semibold mb-3">Hình thức</label>
+              <div id="modeControl" class="row g-3 mb-4">
+                <div class="col-md-6">
+                  <button type="button" data-mode="exam" class="mode-card active w-100 text-start">
+                    <span class="mode-icon">✎</span><span><b class="d-block">Kiểm tra</b><small>40 câu • 30 phút • chấm khi nộp bài</small></span><span class="mode-check">✓</span>
+                  </button>
+                </div>
+                <div class="col-md-6">
+                  <button type="button" data-mode="practice" class="mode-card w-100 text-start">
+                    <span class="mode-icon">↻</span><span><b class="d-block">Luyện tập</b><small>Tự chọn số câu • xem đáp án ngay</small></span><span class="mode-check">✓</span>
+                  </button>
+                </div>
+              </div>
+
+              <hr class="soft-divider">
+              <label class="form-label fw-semibold mb-3">Phạm vi câu hỏi</label>
+              <div class="row g-3 mb-4">
+                <div class="col-md-4"><label class="level-option h-100"><input type="checkbox" class="form-check-input levelCheck" value="easy" checked><span class="level-dot easy"></span><span><b class="d-block">Mức 1</b><small class="text-body-secondary">64 câu</small></span></label></div>
+                <div class="col-md-4"><label class="level-option h-100"><input type="checkbox" class="form-check-input levelCheck" value="normal" checked><span class="level-dot normal"></span><span><b class="d-block">Mức 2</b><small class="text-body-secondary">32 câu</small></span></label></div>
+                <div class="col-md-4"><label class="level-option h-100"><input type="checkbox" class="form-check-input levelCheck" value="hard" checked><span class="level-dot hard"></span><span><b class="d-block">Mức 3</b><small class="text-body-secondary">20 câu</small></span></label></div>
+              </div>
+
+              <div class="row g-3 mb-4">
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold" for="questionCount">Số câu</label>
+                  <select id="questionCount" class="form-select form-select-lg">
+                    <option value="10">10 câu</option><option value="20">20 câu</option><option value="30">30 câu</option><option value="40" selected>40 câu</option><option value="50">50 câu</option><option value="100">100 câu</option><option value="all">Tất cả câu phù hợp</option>
+                  </select>
+                </div>
+                <div class="col-md-6" id="timerRow">
+                  <label class="form-label fw-semibold" for="minutes">Thời gian</label>
+                  <div class="input-group input-group-lg"><input id="minutes" class="form-control" type="number" min="1" max="300" value="30"><span class="input-group-text">phút</span></div>
+                </div>
+              </div>
+
+              <div id="examFixedNote" class="alert exam-alert d-flex gap-3 align-items-start mb-4"><span class="alert-icon">i</span><div><strong class="d-block mb-1">Quy định bài kiểm tra</strong>Hệ thống lấy ngẫu nhiên 40 câu từ phạm vi đã chọn; thời gian làm bài 30 phút; hết giờ tự nộp bài.</div></div>
+              <div class="border rounded-4 overflow-hidden mb-4 bg-body">
+                <label class="setting-row"><span><b class="d-block">Trộn thứ tự câu hỏi</b><small class="text-body-secondary">Mỗi lượt thi có thứ tự câu khác nhau</small></span><span class="form-check form-switch m-0"><input id="shuffleQuestions" class="form-check-input" type="checkbox" checked></span></label>
+                <label class="setting-row border-top"><span><b class="d-block">Trộn vị trí đáp án</b><small class="text-body-secondary">Đáp án đúng A trong nguồn sẽ được trộn vị trí khi làm bài</small></span><span class="form-check form-switch m-0"><input id="shuffleAnswers" class="form-check-input" type="checkbox" checked></span></label>
+              </div>
+              <div id="setupError" class="alert alert-danger hidden"></div>
+              <button id="startBtn" class="btn btn-primary btn-lg w-100 start-btn py-3 fw-bold" type="button">BẮT ĐẦU LÀM BÀI</button>
+            </div>
+          </section>
+        </div>
+
+        <div class="col-xl-4">
+          <section class="card border-0 shadow-sm quiz-card mb-4">
+            <div class="card-body p-4">
+              <h2 class="h5 fw-bold mb-3">Thông tin bộ đề</h2>
+              <div class="list-group list-group-flush mb-4">
+                <div class="list-group-item px-0 bg-transparent"><small class="text-body-secondary d-block">Tổng ngân hàng</small><strong>116 câu hỏi</strong></div>
+                <div class="list-group-item px-0 bg-transparent"><small class="text-body-secondary d-block">Phân mức</small><strong>Mức 1: 64 • Mức 2: 32 • Mức 3: 20</strong></div>
+                <div class="list-group-item px-0 bg-transparent"><small class="text-body-secondary d-block">Bài kiểm tra</small><strong>40 câu / 30 phút</strong></div>
+              </div>
+              <button id="bankBtn" type="button" class="btn btn-outline-primary w-100 mb-2">Xem ngân hàng câu hỏi</button>
+              <button id="reviewWrongBtn" type="button" class="btn btn-outline-secondary w-100 mb-2">Ôn lại câu sai gần nhất</button>
+              <button id="resetProgressBtn" type="button" class="btn btn-link text-danger w-100">Xóa tiến độ</button>
+            </div>
+          </section>
+          <section class="card border-0 shadow-sm quiz-card progress-panel">
+            <div class="card-body p-4">
+              <h3 class="h6 fw-bold mb-3">Tiến độ ôn tập</h3>
+              <div class="row text-center g-2 mb-3">
+                <div class="col-4"><div class="metric-box"><strong id="attemptedStat">0</strong><small>Đã làm</small></div></div>
+                <div class="col-4"><div class="metric-box"><strong id="correctStat">0</strong><small>Lượt đúng</small></div></div>
+                <div class="col-4"><div class="metric-box"><strong id="accuracyStat">0%</strong><small>Chính xác</small></div></div>
+              </div>
+              <div class="progress slim-progress"><div id="progressBar" class="progress-bar" style="width:0%"></div></div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+
+    <section id="quizView" class="view">
+      <div class="card border-0 shadow-sm quiz-topbar mb-4">
+        <div class="card-body p-3 p-lg-4 d-flex flex-wrap align-items-center gap-3">
+          <span id="quizModeLabel" class="badge exam-mode-badge">KIỂM TRA</span>
+          <div class="me-auto"><h1 id="quizTitle" class="h5 fw-bold mb-0">Bài kiểm tra trắc nghiệm</h1></div>
+          <div class="top-stat"><small>TIẾN ĐỘ</small><strong id="quizProgressText">1 / 40</strong></div>
+          <div id="timerBox" class="top-stat timer-top"><small>THỜI GIAN CÒN LẠI</small><strong>30:00</strong></div>
+        </div>
+        <div class="progress top-progress rounded-0"><div id="examProgressFill" class="progress-bar" style="width:0%"></div></div>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-lg-8">
+          <article class="card border-0 shadow-sm exam-paper">
+            <div class="card-header bg-body px-4 py-3 d-flex align-items-center justify-content-between flex-wrap gap-2">
+              <div class="question-index"><span>CÂU</span><strong id="questionNumberDisplay">01</strong></div>
+              <span id="questionLevel" class="badge level-pill">Mức 1</span>
+              <button id="flagBtn" type="button" class="btn btn-sm btn-outline-warning flag-btn">☆ Đánh dấu câu này</button>
+            </div>
+            <div class="card-body p-4 p-lg-5">
+              <h2 id="questionText" class="h5 question-text mb-4">Đang tải câu hỏi...</h2>
+              <div id="answers" class="d-grid gap-3"></div>
+              <div id="practiceFeedback" class="alert feedback hidden mt-4"></div>
+            </div>
+            <div class="card-footer bg-body px-4 py-3 d-flex gap-2 justify-content-between">
+              <button id="prevBtn" type="button" class="btn btn-outline-secondary nav-btn">← Câu trước</button>
+              <button id="nextBtn" type="button" class="btn btn-primary nav-btn">Câu tiếp →</button>
+            </div>
+          </article>
+        </div>
+
+        <div class="col-lg-4">
+          <aside class="exam-sidebar position-sticky">
+            <div class="card border-0 shadow-sm timer-card mb-3">
+              <div class="card-body text-center p-4"><div class="sidebar-kicker mb-2">THỜI GIAN CÒN LẠI</div><div class="big-timer"><span>◷</span><strong id="sidebarTimer">30:00</strong></div></div>
+            </div>
+            <div class="card border-0 shadow-sm question-map-card mb-3">
+              <div class="card-body p-3 p-lg-4">
+                <div class="row g-2 text-center mb-3">
+                  <div class="col-4"><div class="exam-mini-stat answered-stat"><strong id="answeredCount">0</strong><span>Đã trả lời</span></div></div>
+                  <div class="col-4"><div class="exam-mini-stat"><strong id="unansweredCount">40</strong><span>Chưa trả lời</span></div></div>
+                  <div class="col-4"><div class="exam-mini-stat flagged-stat"><strong id="flaggedCount">0</strong><span>Đánh dấu</span></div></div>
+                </div>
+                <div id="questionNav" class="question-nav mb-3"></div>
+                <div class="small text-body-secondary mb-3"><span class="legend-box current"></span> hiện tại &nbsp; <span class="legend-box answered"></span> đã làm &nbsp; <span class="legend-box flagged"></span> đánh dấu</div>
+                <button id="submitBtn" type="button" class="btn btn-success w-100 submit-btn mb-2">NỘP BÀI</button>
+                <button id="exitQuizBtn" type="button" class="btn btn-outline-danger w-100">Thoát bài</button>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section id="resultView" class="view">
+      <div class="card border-0 shadow-sm result-card mx-auto" style="max-width:900px">
+        <div class="card-body p-4 p-lg-5">
+          <div class="text-center mb-4">
+            <span class="result-icon">✓</span>
+            <span class="badge hero-badge d-table mx-auto mb-2">KẾT QUẢ BÀI LÀM</span>
+            <h1 id="resultHeading" class="display-6 fw-bold">Hoàn thành</h1>
+          </div>
+          <div class="row g-4 align-items-center justify-content-center">
+            <div class="col-md-5"><div class="score-ring mx-auto"><strong id="scorePercent">0%</strong><span id="scoreText">0/40 câu đúng</span></div></div>
+            <div class="col-md-7">
+              <div class="row g-3">
+                <div class="col-4"><div class="result-stat good"><span>✓</span><strong id="resultCorrect">0</strong><small>Đúng</small></div></div>
+                <div class="col-4"><div class="result-stat bad"><span>×</span><strong id="resultWrong">0</strong><small>Sai</small></div></div>
+                <div class="col-4"><div class="result-stat blank"><span>–</span><strong id="resultBlank">0</strong><small>Bỏ trống</small></div></div>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex flex-wrap gap-2 justify-content-center mt-4">
+            <button id="retryBtn" type="button" class="btn btn-primary">Làm đề mới</button>
+            <button id="reviewResultBtn" type="button" class="btn btn-outline-primary">Xem lại bài</button>
+            <button id="homeBtn" type="button" class="btn btn-outline-secondary">Về trang chính</button>
+          </div>
+          <div id="reviewList" class="review-list hidden mt-5"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="bankView" class="view">
+      <div class="card border-0 shadow-sm quiz-card">
+        <div class="card-header bg-transparent p-4 d-flex align-items-center justify-content-between flex-wrap gap-3">
+          <div><h1 class="h3 fw-bold mb-1">Ngân hàng 116 câu hỏi</h1><p id="bankCount" class="text-body-secondary mb-0">Hiển thị 116/116 câu</p></div>
+          <button id="closeBankBtn" type="button" class="btn btn-outline-secondary">← Quay lại</button>
+        </div>
+        <div class="card-body p-4">
+          <div class="row g-3 mb-4">
+            <div class="col-md-6"><input id="bankSearch" class="form-control form-control-lg" placeholder="Tìm nội dung hoặc số câu..."></div>
+            <div class="col-md-3"><select id="bankLevel" class="form-select form-select-lg"><option value="all">Tất cả mức</option><option value="easy">Mức 1</option><option value="normal">Mức 2</option><option value="hard">Mức 3</option></select></div>
+            <div class="col-md-3"><label class="reveal-toggle border rounded-3 px-3 h-100"><span class="form-check form-switch m-0 d-flex align-items-center gap-2"><input id="revealAnswers" class="form-check-input" type="checkbox"><span>Hiện đáp án đúng</span></span></label></div>
+          </div>
+          <div id="bankList" class="bank-list"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="modal fade" id="submitConfirmModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="modal-header"><h2 class="modal-title fs-5">Xác nhận nộp bài</h2><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p id="submitConfirmText" class="mb-0"></p></div><div class="modal-footer"><button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Tiếp tục làm</button><button id="confirmSubmitBtn" type="button" class="btn btn-success">Nộp bài</button></div></div></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="data/questions-1.js?v=20260814-3"></script>
+  <script src="data/questions-2.js?v=20260814-3"></script>
+  <script src="data/questions-3.js?v=20260814-3"></script>
+  <script src="data/questions-4.js?v=20260814-3"></script>
+  <script src="data/questions-5.js?v=20260814-3"></script>
+  <script src="data/questions-6.js?v=20260814-3"></script>
+  <script src="data/questions.js?v=20260814-3"></script>
+  <script src="app.js?v=20260814-3"></script>
 </body>
 </html>
